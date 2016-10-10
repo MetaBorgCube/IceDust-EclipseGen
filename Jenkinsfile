@@ -28,6 +28,14 @@ node {
     exec 'git clone https://github.com/metaborg/spoofax-deploy.git'
   }
   stage('Generate Eclipses'){
-    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o win32 -h x86 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.updatesite/target/site/'
+    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o macosx -h x64 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.updatesite/target/site/'
+    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o linux -h x64 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.updatesite/target/site/'
+    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o linux -h x86 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.updatesite/target/site/'
+    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o windows -h x64 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.updatesite/target/site/'
+    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o windows -h x86 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.updatesite/target/site/'
   }
+  stage('Archive') {
+    archiveArtifacts artifacts: 'dist/', onlyIfSuccessful: true
+  }
+
 }
