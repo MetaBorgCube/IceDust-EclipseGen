@@ -13,6 +13,8 @@ def exec(String cmd) {
 }
 
 properties([
+  buildDiscarder(logRotator(numToKeepStr: '2')),
+  disableConcurrentBuilds(),
   pipelineTriggers([
     upstream(
       threshold: hudson.model.Result.SUCCESS,
