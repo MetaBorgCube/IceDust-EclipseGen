@@ -12,6 +12,15 @@ def exec(String cmd) {
   sh(script: cmd)
 }
 
+properties([
+  pipelineTriggers([
+    upstream(
+      threshold: hudson.model.Result.SUCCESS,
+      upstreamProjects: '/metaborgcube/icedust/master'
+    )
+  ])
+])
+
 node {
   stage('Echo') {
     // Print important variables and versions for debugging purposes.
