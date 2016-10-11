@@ -16,7 +16,7 @@ properties([
   pipelineTriggers([
     upstream(
       threshold: hudson.model.Result.SUCCESS,
-      upstreamProjects: '/metaborgcube/icedust/master'
+      upstreamProjects: '/metaborgcube/IceDust/master'
     )
   ])
 ])
@@ -46,5 +46,7 @@ node {
   stage('Archive') {
     archiveArtifacts artifacts: 'dist/', onlyIfSuccessful: true
   }
-
+  stage('Cleanup') {
+    exec 'git clean -ddffxx'
+  }
 }
