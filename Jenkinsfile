@@ -33,22 +33,18 @@ node {
     exec 'java -version'
     exec 'mvn --version'
   }
-  stage('Spoofax-deploy Repo'){
-    checkout scm
-    exec 'git clean -ddffxx'
-    exec 'git clone https://github.com/metaborg/spoofax-deploy.git'
+  stage('Install Eclipsegen_cli'){
+    exec 'python3 -m ensurepip --upgrade --user'
+    exec 'python3 -m pip install eclipsegen_cli --upgrade --user'
   }
   stage('Generate Eclipses'){
-    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o macosx -h x64 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.site/target/site/'
-    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o linux -h x64 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.site/target/site/'
-    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o linux -h x86 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.site/target/site/'
-    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o windows -h x64 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.site/target/site/'
-    exec 'sh spoofax-deploy/releng/run.sh gen-eclipse -d dist/eclipse -o windows -h x86 -a -j --archive-jre-separately --install icedust.eclipse.feature.feature.group --repo http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.site/target/site/'
+    exec 'rm -rf dist/eclipse/'
+    exec '~/.local/bin/eclipsegen create dist/eclipse/ -f IceDust -o macosx -o linux -o windows -h x64 -h x86 -a -p platform -p java -e -i icedust.eclipse.feature.feature.group -r http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.site/target/site/'
   }
   stage('Archive') {
     archiveArtifacts artifacts: 'dist/', onlyIfSuccessful: true
   }
   stage('Cleanup') {
-    exec 'git clean -ddffxx'
+
   }
 }
