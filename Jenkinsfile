@@ -39,7 +39,7 @@ node {
   }
   stage('Generate Eclipses'){
     exec 'rm -rf dist/eclipse/'
-    exec '~/.local/bin/eclipsegen create dist/eclipse/ -f IceDust -o macosx -o linux -o windows -h x64 -h x86 -a -p platform -p java -e -i icedust.eclipse.feature.feature.group -r http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.site/target/site/'
+    exec '~/.local/bin/eclipsegen create dist/eclipse/ -f IceDust -o macosx -o linux -o windows -h x64 -h x86 -a -p platform -p java -e -j -i icedust.eclipse.feature.feature.group -r http://buildfarm.metaborg.org/job/metaborgcube/job/IceDust/job/master/lastSuccessfulBuild/artifact/icedust.eclipse.site/target/site/'
   }
   stage('Archive') {
     archiveArtifacts artifacts: 'dist/', onlyIfSuccessful: true
